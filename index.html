@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Demo</title>
+    <style type = "text/css">
+    	.electionDates
+    	{
+    		font-weight: bold;
+    		font-size: 20px;
+    		text-align: center;
+  			font-family: 'Verdana';
+    	}
+    	.electionInfo
+    	{
+    		text-align: center;
+    		font-family: 'Verdana';
+    	}
+    	#button_div
+    	{
+    		text-align: center;
+			margin: auto;
+			
+    
+    	}
+    	#button
+    	{
+    		border: none;
+    		background-color: green; 
+		    color: white;
+		    padding: 15px 32px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    font-size: 16px;
+		    margin: 4px 2px;
+		    cursor: pointer;
+    	}
+    </style>
+</head>
+<body>
+    <p id="test"></p>
+    <div id = "button_div">
+    	<button id = "button">Click for dates</button>
+    </div>	
+    <script src="jquery.js"></script>
+    <script>
+
+    //url: https://api.open.fec.gov/v1/election-dates/?page=1&sort=-election_date&election_state=TX&api_key=zhI09woqgYb322Ut3HBVrAJkoXwiHhDY8dxLf2Vj&election_year=2016&per_page=20
+
+    /**
+    * Puts dates in a Month Day, Year format. Example: changes 2016-11-08 to November 08, 2016
+    */
+    function createFullDate (month, day, year)
+    {
+    	return month + " " + day + ", " + year;
+    }
+ 	
+ 	/**
+     * Makes sure the jQuery code executes only after the page is fully loaded
+     */
+    $( document ).ready(function() {
+    	/**
+    	 * Ensures that the dates are listed only after the button that says "Click for dates" is clicked
+    	 */
+        $( "button" ).click(function( event ) {
+            var apiURL = "https://api.open.fec.gov/v1/election-dates/?page=1&sort=-election_date&election_state=TX&api_key=zhI09woqgYb322Ut3HBVrAJkoXwiHhDY8dxLf2Vj&election_year=2016&per_page=20";
+           	
+    			/**
+    			 * Interacts with the FEC API to pull the data on dates
+    			 * @param apiURL the URL needed to access the data from the API
+    			 * @param function(json) handles the display of election information, which is returned from
+    			 * the API in JavaScript Object Notation (JSON)
+    			 */
+            $.getJSON(apiURL, function(json){
+            	var allMonths = ["January", "February", "March", "April", "May",
+  										"June", "July", "August", "September", "October", "November", "December"];
+  				var dateArray = [];
+  				var result = "";
+
+  				//adds all the dates to an array 
+  				for (var x = 0; x < json.results.length; x++)
+            	{
+            		var rawDate = json.results[x].election_date;
+            		if(dateArray.indexOf(rawDate) === -1)
+            			dateArray.push(rawDate);
+            	}
+
+            	//Displays each individual election underneath the date on which it is happening
+            	for (var x = 0; x < dateArray.length; x++)
+            	{
+            		var current = dateArray[x];
+            		var month = allMonths[parseInt(dateArray[x].substring(5,7)) - 1];
+            		var day = dateArray[x].substring(8,10);
+            		var year = dateArray[x].substring(0,4);
+            		var fullDate = createFullDate(month, day, year);
+
+            		var date = document.createElement("p");
+            		date.appendChild(document.createTextNode(fullDate + ": "));
+            		date.className = "electionDates";
+            		document.body.appendChild(date);
+            		for (var y = 0; y < json.results.length; y++)
+            		{
+            			if (json.results[y].election_date === current)
+            			{
+            				var election = document.createElement("p");
+            				var office = json.results[y].office_sought;
+            				if (office === "P")
+            					office = "President";
+            				else if (office === "S")
+            					office = "Senate";
+            				else
+            					office = "House";
+            				election.appendChild(document.createTextNode(json.results[y].election_type_full + " (" + office + ")"));
+            				election.className = "electionInfo";
+            				document.body.appendChild(election);
+            			}	
+            		}	
+            	}
+            });
+			
+			document.getElementById("button").disabled = true;
+							
+        });
+    });
+    </script>
+</body>
+</html>
+
+
