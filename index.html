@@ -19,22 +19,20 @@
     	#button_div
     	{
     		text-align: center;
-			margin: auto;
-			
-    
+		margin: auto;
     	}
     	#button
     	{
     		border: none;
     		background-color: green; 
-		    color: white;
-		    padding: 15px 32px;
-		    text-align: center;
-		    text-decoration: none;
-		    display: inline-block;
-		    font-size: 16px;
-		    margin: 4px 2px;
-		    cursor: pointer;
+		color: white;
+		padding: 15px 32px;
+		text-align: center;
+	        text-decoration: none;
+	        display: inline-block;
+       	        font-size: 16px;
+	        margin: 4px 2px;
+                cursor: pointer;
     	}
     </style>
 </head>
@@ -71,12 +69,12 @@
     			 */
             $.getJSON(apiURL, function(json){
             	var allMonths = ["January", "February", "March", "April", "May",
-  										"June", "July", "August", "September", "October", "November", "December"];
+  				"June", "July", "August", "September", "October", "November", "December"];
   				var dateArray = [];
   				var result = "";
 
-  				//adds all the dates to an array 
-  				for (var x = 0; x < json.results.length; x++)
+  		//adds all the dates to an array 
+  		for (var x = 0; x < json.results.length; x++)
             	{
             		var rawDate = json.results[x].election_date;
             		if(dateArray.indexOf(rawDate) === -1)
