@@ -60,12 +60,12 @@
     	 */
         $( "button" ).click(function( event ) {
             var apiURL = "https://api.open.fec.gov/v1/election-dates/?page=1&sort=-election_date&election_state=TX&api_key=zhI09woqgYb322Ut3HBVrAJkoXwiHhDY8dxLf2Vj&election_year=2016&per_page=20";
-    			/**
-    			 * Interacts with the FEC API to pull the data on dates
-    			 * @param apiURL the URL needed to access the data from the API
-    			 * @param function(json) handles the display of election information, which is returned from
-    			 * the API in JavaScript Object Notation (JSON)
-    			 */
+           /**
+    	    * Interacts with the FEC API to pull the data on dates
+  	    * @param apiURL the URL needed to access the data from the API
+            * @param function(json) handles the display of election information, which is returned from
+    	    * the API in JavaScript Object Notation (JSON)
+    	    */
             $.getJSON(apiURL, function(json){
             	var allMonths = ["January", "February", "March", "April", "May",
   				"June", "July", "August", "September", "October", "November", "December"];
